@@ -10,12 +10,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.json.JSONException;
 import org.springframework.web.bind.annotation.GetMapping;
         import org.springframework.web.bind.annotation.RequestParam;
         import org.springframework.web.bind.annotation.RestController;
@@ -27,13 +23,18 @@ public class StreetLightController {
     private final AtomicLong counter = new AtomicLong();
 
     @GetMapping("/eclairage-public")
-    public StreetLight streetLight(@RequestParam(value = "name", defaultValue = "World") String name) {
-        return new StreetLight(counter.incrementAndGet(), "", String.format(template, name));
+    public String streetLight(@RequestParam(value = "name", defaultValue = "World") String name) throws JSONException {
+        // return new StreetLight(counter.incrementAndGet(), "", String.format(template, name));
+
+        return StreetLightController.callOpenDataParisApi("eclairage-public").toString();
+
     }
+
     
-    
-    static void callOpenDataParisApi(String dataset)
+    static JSONArray callOpenDataParisApi(String dataset)
     {
+        JSONArray output = new JSONArray();
+
         try {
 
             URL url = new URL("https://opendata.paris.fr/api/records/1.0/search/?dataset=" + dataset);
@@ -49,11 +50,10 @@ public class StreetLightController {
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     (conn.getInputStream())));
 
-            String output;
-            System.out.println("Output from Server .... \n");
-            while ((output = br.readLine()) != null) {
-                // System.out.println(output);
-                StreetLightController.jsonToObject(output);
+            // output = br.readLine() != null ? StreetLightController.jsonToObject(br.readLine()) : new ArrayList<JSONObject>();
+            String line;
+            while ((line = br.readLine()) != null) {
+                output = StreetLightController.jsonToObject(line);
             }
 
             conn.disconnect();
@@ -66,18 +66,20 @@ public class StreetLightController {
             e.printStackTrace();
         }
 
+        // System.out.println(output);
+        return output;
     }
 
-    public static void jsonToObject(String jsonString) throws JSONException {
+    public static JSONArray jsonToObject(String jsonString) throws JSONException {
         JSONObject jsonDecode = new JSONObject(jsonString);
-        System.out.println(jsonDecode);
+        // System.out.println(jsonDecode);
 
         JSONArray jsonDecodeRecords = jsonDecode.getJSONArray("records");
 
         int length = jsonDecodeRecords.length();
-        System.out.println(length);
+        // System.out.println(length);
 
-        ArrayList<JSONObject> mylist = new ArrayList<JSONObject>();
+        JSONArray listStreetLight = new JSONArray();
         for (int i=0;i<length;i++){
             JSONObject element = jsonDecodeRecords.getJSONObject(i);
             StreetLight streetLightElement = new StreetLight(
@@ -86,11 +88,9 @@ public class StreetLightController {
                     element.getString("datasetid")
             );
 
-            mylist.add(streetLightElement.toJSON());
+            listStreetLight.put(streetLightElement.toJSON());
         }
 
-        System.out.println("--------------");
-        System.out.println(mylist);
-        System.out.println("--------------");
+        return listStreetLight;
     }
 }

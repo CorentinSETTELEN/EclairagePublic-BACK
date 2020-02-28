@@ -8,7 +8,7 @@ public class ApiRestApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ApiRestApplication.class, args);
-		StreetLightController.callOpenDataParisApi("eclairage-public");
+//		StreetLightController.callOpenDataParisApi("eclairage-public");
 	}
 
 }
