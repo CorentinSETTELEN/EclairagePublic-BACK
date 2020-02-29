@@ -1,0 +1,114 @@
+{
+	"info": {
+		"_postman_id": "c60971fd-ac56-41c6-916a-5f6b9972ad30",
+		"name": "Java-BACK",
+		"description": "API\n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Bois de Vincennes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/eclairage-public/BOIS+DE+VINCENNES",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"eclairage-public",
+						"BOIS+DE+VINCENNES"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Bois de Boulogne",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/eclairage-public/BOIS+de+BOULOGNE",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"eclairage-public",
+						"BOIS+de+BOULOGNE"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Data Eclairage public",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.data.gouv.fr/api/1/datasets/eclairage-public/",
+					"protocol": "https",
+					"host": [
+						"www",
+						"data",
+						"gouv",
+						"fr"
+					],
+					"path": [
+						"api",
+						"1",
+						"datasets",
+						"eclairage-public",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Inital API",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://opendata.paris.fr/api/records/1.0/search/?dataset=eclairage-public&facet=lib_voiedo&refine.lib_voiedo=BOIS+de+BOULOGNE",
+					"protocol": "https",
+					"host": [
+						"opendata",
+						"paris",
+						"fr"
+					],
+					"path": [
+						"api",
+						"records",
+						"1.0",
+						"search",
+						""
+					],
+					"query": [
+						{
+							"key": "dataset",
+							"value": "eclairage-public"
+						},
+						{
+							"key": "facet",
+							"value": "lib_voiedo"
+						},
+						{
+							"key": "refine.lib_voiedo",
+							"value": "BOIS+de+BOULOGNE"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
