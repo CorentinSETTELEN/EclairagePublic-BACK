@@ -12,28 +12,20 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.atomic.AtomicLong;
 
-<<<<<<< HEAD
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-        import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.websocket.server.PathParam;
 
-=======
-import org.springframework.web.bind.annotation.GetMapping;
-        import org.springframework.web.bind.annotation.RequestParam;
-        import org.springframework.web.bind.annotation.RestController;
-
->>>>>>> 7a6895cdeba0f18f458ccaa1cd7a9894dd3bcc57
 @RestController
 public class StreetLightController {
 
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
 
-<<<<<<< HEAD
     // @GetMapping("/eclairage-public/{town}", produces = { "application/json" })
     @GetMapping(value="/eclairage-public/{district}", produces = "application/json")
     public <GET, Path, Produces> String getEclairagePublicTown(@PathVariable String district) throws JSONException
@@ -58,24 +50,6 @@ public class StreetLightController {
         try {
             // URL url = new URL("https://opendata.paris.fr/api/records/1.0/search/?dataset=eclairage-public&facet=ville&refine.ville=" + dataset);
             URL url = new URL("https://opendata.paris.fr/api/records/1.0/search/?dataset=eclairage-public&facet=lib_voiedo&refine.lib_voiedo=" + dataset);
-=======
-    @GetMapping("/eclairage-public")
-    public String streetLight(@RequestParam(value = "name", defaultValue = "World") String name) throws JSONException {
-        // return new StreetLight(counter.incrementAndGet(), "", String.format(template, name));
-
-        return StreetLightController.callOpenDataParisApi("eclairage-public").toString();
-
-    }
-
-    
-    static JSONArray callOpenDataParisApi(String dataset)
-    {
-        JSONArray output = new JSONArray();
-
-        try {
-
-            URL url = new URL("https://opendata.paris.fr/api/records/1.0/search/?dataset=" + dataset);
->>>>>>> 7a6895cdeba0f18f458ccaa1cd7a9894dd3bcc57
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
