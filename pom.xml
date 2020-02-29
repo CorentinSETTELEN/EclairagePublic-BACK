@@ -53,6 +53,7 @@
 			<version>0.0.20131108.vaadin1</version>
 			<scope>compile</scope>
 		</dependency>
+<<<<<<< HEAD
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
@@ -73,6 +74,9 @@
             <version>5.2.4.RELEASE</version>
         </dependency>
     </dependencies>
+=======
+	</dependencies>
+>>>>>>> 7a6895cdeba0f18f458ccaa1cd7a9894dd3bcc57
 
 	<build>
 		<plugins>
