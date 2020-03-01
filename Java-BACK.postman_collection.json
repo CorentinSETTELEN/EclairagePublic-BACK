@@ -7,12 +7,12 @@
 	},
 	"item": [
 		{
-			"name": "Bois de Vincennes",
+			"name": "Bois de Vincennes / 50 reçus",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/eclairage-public/BOIS+DE+VINCENNES",
+					"raw": "http://localhost:8080/eclairage-public/&facet=lib_voiedo&refine.lib_voiedo=BOIS+DE+VINCENNES",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -20,7 +20,7 @@
 					"port": "8080",
 					"path": [
 						"eclairage-public",
-						"BOIS+DE+VINCENNES"
+						"&facet=lib_voiedo&refine.lib_voiedo=BOIS+DE+VINCENNES"
 					]
 				}
 			},
@@ -32,7 +32,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/eclairage-public/BOIS+de+BOULOGNE",
+					"raw": "http://localhost:8080/eclairage-public/&facet=lib_voiedo&refine.lib_voiedo=BOIS+de+BOULOGNE",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -40,7 +40,7 @@
 					"port": "8080",
 					"path": [
 						"eclairage-public",
-						"BOIS+de+BOULOGNE"
+						"&facet=lib_voiedo&refine.lib_voiedo=BOIS+de+BOULOGNE"
 					]
 				}
 			},

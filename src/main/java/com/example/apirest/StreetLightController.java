@@ -27,29 +27,29 @@ public class StreetLightController {
     private final AtomicLong counter = new AtomicLong();
 
     // @GetMapping("/eclairage-public/{town}", produces = { "application/json" })
-    @GetMapping(value="/eclairage-public/{district}", produces = "application/json")
-    public <GET, Path, Produces> String getEclairagePublicTown(@PathVariable String district) throws JSONException
+    @GetMapping(value="/eclairage-public/{param}", produces = "application/json")
+    public <GET, Path, Produces> String getEclairagePublicTown(@PathVariable String param) throws JSONException
     {
         System.out.println("param");
         // return new StreetLight(counter.incrementAndGet(), "", String.format(template, name));
-        return StreetLightController.callOpenDataParisApi(district).toString();
+        return StreetLightController.callOpenDataParisApi(param).toString();
     }
 
     @GetMapping("/eclairage-public")
-    public String getEclairagePublic(@RequestParam(value = "district", defaultValue = "BOIS+DE+BOULOGNE") String district) throws JSONException {
+    public String getEclairagePublic(@RequestParam(value = "district", defaultValue = "") String param) throws JSONException {
         System.out.println("fix");
-        return StreetLightController.callOpenDataParisApi(district).toString();
+        return StreetLightController.callOpenDataParisApi(param).toString();
     }
 
-    static JSONArray callOpenDataParisApi(String dataset)
+    static JSONArray callOpenDataParisApi(String param)
     {
-        System.out.println(dataset);
+        System.out.println(param);
 
         JSONArray output = new JSONArray();
 
         try {
             // URL url = new URL("https://opendata.paris.fr/api/records/1.0/search/?dataset=eclairage-public&facet=ville&refine.ville=" + dataset);
-            URL url = new URL("https://opendata.paris.fr/api/records/1.0/search/?dataset=eclairage-public&facet=lib_voiedo&refine.lib_voiedo=" + dataset);
+            URL url = new URL("https://opendata.paris.fr/api/records/1.0/search/?dataset=eclairage-public" + param);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
@@ -65,6 +65,7 @@ public class StreetLightController {
             // output = br.readLine() != null ? StreetLightController.jsonToObject(br.readLine()) : new ArrayList<JSONObject>();
             String line;
             while ((line = br.readLine()) != null) {
+                System.out.println(line);
                 output = StreetLightController.jsonToObject(line);
             }
 
@@ -94,10 +95,25 @@ public class StreetLightController {
         JSONArray listStreetLight = new JSONArray();
         for (int i=0;i<length;i++){
             JSONObject element = jsonDecodeRecords.getJSONObject(i);
+
+
+            JSONObject elementGeometry = element.getJSONObject("geometry");
+            JSONArray elementCoord = elementGeometry.getJSONArray("coordinates");
+
+            Double elementCoordAltitude = elementCoord.getDouble(0);
+            Double elementCoordLongitude = elementCoord.getDouble(1);
+
+            JSONObject elementField = element.getJSONObject("fields");
+            System.out.println(elementField);
+
+
             StreetLight streetLightElement = new StreetLight(
-                    i +1,
-                    element.getString("recordid").trim(),
-                    element.getString("datasetid")
+                i +1,
+                element.getString("recordid").trim(),
+                element.getString("datasetid"),
+                elementField.getString("flux_lampe"),
+                elementCoordAltitude,
+                elementCoordLongitude
             );
 
             listStreetLight.put(streetLightElement.toJSON());
