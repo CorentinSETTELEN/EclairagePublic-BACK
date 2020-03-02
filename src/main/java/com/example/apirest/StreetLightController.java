@@ -53,6 +53,9 @@ public class StreetLightController {
         return StreetLightController.callOpenDataParisApi(param, recordid).toString();
     }
 
+    /*
+    Call opendata.paris API with param
+     */
     static JSONArray callOpenDataParisApi(String param, String recordid)
     {
         System.out.println(param);
@@ -102,6 +105,9 @@ public class StreetLightController {
         return output;
     }
 
+    /*
+    List all StreetLights
+     */
     public static JSONArray jsonToObject(String jsonString) throws JSONException {
         JSONObject jsonDecode = new JSONObject(jsonString);
         JSONArray jsonDecodeRecords = jsonDecode.getJSONArray("records");
@@ -117,13 +123,14 @@ public class StreetLightController {
         return listStreetLight;
     }
 
+    /*
+     List elements and get the StreetLight from recordId
+     */
     public static JSONArray jsonToObjectGetSingle(String jsonString, String recordId) throws JSONException {
         JSONObject jsonDecode = new JSONObject(jsonString);
         JSONArray jsonDecodeRecords = jsonDecode.getJSONArray("records");
 
         int length = jsonDecodeRecords.length();
-
-        System.out.println("-> " + recordId);
 
         JSONArray listStreetLight = new JSONArray();
         for (int i=0;i<length;i++){
@@ -141,6 +148,9 @@ public class StreetLightController {
         return listStreetLight;
     }
 
+    /*
+    Exploit the json content from api's request
+     */
     public static JSONObject getJsonContentApi(JSONObject element, int i) throws JSONException {
 
         JSONObject elementGeometry = element.getJSONObject("geometry");
