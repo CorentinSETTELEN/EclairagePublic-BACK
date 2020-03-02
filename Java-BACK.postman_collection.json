@@ -7,12 +7,12 @@
 	},
 	"item": [
 		{
-			"name": "Bois de Vincennes / 50 reçus",
+			"name": "Bois de Vincennes / 200 reçus",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/eclairage-public/&facet=lib_voiedo&refine.lib_voiedo=BOIS+DE+VINCENNES",
+					"raw": "http://localhost:8080/eclairage-public/&facet=lib_voiedo&refine.lib_voiedo=BOIS+DE+VINCENNES&rows=200",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -20,7 +20,7 @@
 					"port": "8080",
 					"path": [
 						"eclairage-public",
-						"&facet=lib_voiedo&refine.lib_voiedo=BOIS+DE+VINCENNES"
+						"&facet=lib_voiedo&refine.lib_voiedo=BOIS+DE+VINCENNES&rows=200"
 					]
 				}
 			},
@@ -47,32 +47,28 @@
 			"response": []
 		},
 		{
-			"name": "Data Eclairage public",
+			"name": "LampadaireID in BoisDeBoulogne",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://www.data.gouv.fr/api/1/datasets/eclairage-public/",
-					"protocol": "https",
+					"raw": "http://localhost:8080/eclairage-public/&facet=lib_voiedo&refine.lib_voiedo=BOIS+de+BOULOGNE/21fda5d428471d4bd3928e0fa79d88f9919ea218",
+					"protocol": "http",
 					"host": [
-						"www",
-						"data",
-						"gouv",
-						"fr"
+						"localhost"
 					],
+					"port": "8080",
 					"path": [
-						"api",
-						"1",
-						"datasets",
 						"eclairage-public",
-						""
+						"&facet=lib_voiedo&refine.lib_voiedo=BOIS+de+BOULOGNE",
+						"21fda5d428471d4bd3928e0fa79d88f9919ea218"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Inital API",
+			"name": "[opendata.paris] Eclairage public",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -104,6 +100,31 @@
 							"key": "refine.lib_voiedo",
 							"value": "BOIS+de+BOULOGNE"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[data.gouv] Data Eclairage public",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.data.gouv.fr/api/1/datasets/eclairage-public/",
+					"protocol": "https",
+					"host": [
+						"www",
+						"data",
+						"gouv",
+						"fr"
+					],
+					"path": [
+						"api",
+						"1",
+						"datasets",
+						"eclairage-public",
+						""
 					]
 				}
 			},

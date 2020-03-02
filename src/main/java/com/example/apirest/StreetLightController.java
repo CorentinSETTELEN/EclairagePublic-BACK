@@ -1,5 +1,6 @@
 package com.example.apirest;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,6 +8,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -32,16 +34,26 @@ public class StreetLightController {
     {
         System.out.println("param");
         // return new StreetLight(counter.incrementAndGet(), "", String.format(template, name));
-        return StreetLightController.callOpenDataParisApi(param).toString();
+        return StreetLightController.callOpenDataParisApi(param, "").toString();
     }
 
     @GetMapping("/eclairage-public")
     public String getEclairagePublic(@RequestParam(value = "district", defaultValue = "") String param) throws JSONException {
         System.out.println("fix");
-        return StreetLightController.callOpenDataParisApi(param).toString();
+        return StreetLightController.callOpenDataParisApi(param, "").toString();
     }
 
-    static JSONArray callOpenDataParisApi(String param)
+    @GetMapping("/eclairage-public/{param}/{recordid}")
+    public String getEclairagePublicSingle(@PathVariable String param, @PathVariable String recordid) throws JSONException {
+
+        System.out.println("----------------");
+        System.out.println(param);
+        System.out.println(recordid);
+        System.out.println("----------------");
+        return StreetLightController.callOpenDataParisApi(param, recordid).toString();
+    }
+
+    static JSONArray callOpenDataParisApi(String param, String recordid)
     {
         System.out.println(param);
 
@@ -64,10 +76,17 @@ public class StreetLightController {
 
             // output = br.readLine() != null ? StreetLightController.jsonToObject(br.readLine()) : new ArrayList<JSONObject>();
             String line;
-            while ((line = br.readLine()) != null) {
-                System.out.println(line);
-                output = StreetLightController.jsonToObject(line);
+
+            if(recordid == ""){
+                while ((line = br.readLine()) != null) {
+                    output = StreetLightController.jsonToObject(line);
+                }
+            }else{
+                while ((line = br.readLine()) != null) {
+                    output = StreetLightController.jsonToObjectGetSingle(line, recordid);
+                }
             }
+
 
             conn.disconnect();
 
@@ -85,40 +104,64 @@ public class StreetLightController {
 
     public static JSONArray jsonToObject(String jsonString) throws JSONException {
         JSONObject jsonDecode = new JSONObject(jsonString);
-        // System.out.println(jsonDecode);
-
         JSONArray jsonDecodeRecords = jsonDecode.getJSONArray("records");
 
         int length = jsonDecodeRecords.length();
-        // System.out.println(length);
+
+        JSONArray listStreetLight = new JSONArray();
+        for (int i=0;i<length;i++){
+            JSONObject element = jsonDecodeRecords.getJSONObject(i);
+            listStreetLight.put(StreetLightController.getJsonContentApi(element, i));
+        }
+
+        return listStreetLight;
+    }
+
+    public static JSONArray jsonToObjectGetSingle(String jsonString, String recordId) throws JSONException {
+        JSONObject jsonDecode = new JSONObject(jsonString);
+        JSONArray jsonDecodeRecords = jsonDecode.getJSONArray("records");
+
+        int length = jsonDecodeRecords.length();
+
+        System.out.println("-> " + recordId);
 
         JSONArray listStreetLight = new JSONArray();
         for (int i=0;i<length;i++){
             JSONObject element = jsonDecodeRecords.getJSONObject(i);
 
+            System.out.println("-> " + element.getString("recordid"));
+            if(element.getString("recordid").trim().equals(recordId)){
+                listStreetLight.put(StreetLightController.getJsonContentApi(element, i));
+                break;
+            }else{
+                continue;
+            }
+        }
 
-            JSONObject elementGeometry = element.getJSONObject("geometry");
-            JSONArray elementCoord = elementGeometry.getJSONArray("coordinates");
+        return listStreetLight;
+    }
 
-            Double elementCoordAltitude = elementCoord.getDouble(0);
-            Double elementCoordLongitude = elementCoord.getDouble(1);
+    public static JSONObject getJsonContentApi(JSONObject element, int i) throws JSONException {
 
-            JSONObject elementField = element.getJSONObject("fields");
-            System.out.println(elementField);
+        JSONObject elementGeometry = element.getJSONObject("geometry");
+        JSONArray elementCoord = elementGeometry.getJSONArray("coordinates");
 
+        Double elementCoordAltitude = elementCoord.getDouble(0);
+        Double elementCoordLongitude = elementCoord.getDouble(1);
 
-            StreetLight streetLightElement = new StreetLight(
-                i +1,
+        JSONObject elementField = element.getJSONObject("fields");
+
+        StreetLight streetLightElement = new StreetLight(
+                i + 1,
                 element.getString("recordid").trim(),
                 element.getString("datasetid"),
                 elementField.getString("flux_lampe"),
                 elementCoordAltitude,
                 elementCoordLongitude
-            );
+        );
 
-            listStreetLight.put(streetLightElement.toJSON());
-        }
-
-        return listStreetLight;
+        return streetLightElement.toJSON();
     }
+
+
 }
