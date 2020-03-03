@@ -23,24 +23,26 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.websocket.server.PathParam;
 
 @RestController
-public class StreetLightController {
+public class WorkCampController {
 
-    // @GetMapping("/eclairage-public/{town}", produces = { "application/json" })
-    @GetMapping(value="/eclairage-public/{param}", produces = "application/json")
-    public <GET, Path, Produces> String getEclairagePublicTown(@PathVariable String param) throws JSONException
+    private static final String template = "Hello, %s!";
+    private final AtomicLong counter = new AtomicLong();
+
+    @GetMapping(value="/chantiers-perturbants/{param}", produces = "application/json")
+    public <GET, Path, Produces> String getChantiersPertubantsTown(@PathVariable String param) throws JSONException
     {
         // return new StreetLight(counter.incrementAndGet(), "", String.format(template, name));
-        return StreetLightController.callOpenDataParisApi(param, "").toString();
+        return WorkCampController.callOpenDataParisApi(param, "").toString();
     }
 
-    @GetMapping("/eclairage-public")
-    public String getEclairagePublic(@RequestParam(value = "district", defaultValue = "") String param) throws JSONException {
-        return StreetLightController.callOpenDataParisApi(param, "").toString();
+    @GetMapping("/chantiers-perturbants")
+    public String getChantiersPertubants(@RequestParam(value = "district", defaultValue = "") String param) throws JSONException {
+        return WorkCampController.callOpenDataParisApi(param, "").toString();
     }
 
-    @GetMapping("/eclairage-public/{param}/{recordid}")
-    public String getEclairagePublicSingle(@PathVariable String param, @PathVariable String recordid) throws JSONException {
-        return StreetLightController.callOpenDataParisApi(param, recordid).toString();
+    @GetMapping("/chantiers-perturbants/{param}/{recordid}")
+    public String getChantiersPertubantsSingle(@PathVariable String param, @PathVariable String recordid) throws JSONException {
+        return WorkCampController.callOpenDataParisApi(param, recordid).toString();
     }
 
     /*
@@ -54,7 +56,7 @@ public class StreetLightController {
 
         try {
             // URL url = new URL("https://opendata.paris.fr/api/records/1.0/search/?dataset=eclairage-public&facet=ville&refine.ville=" + dataset);
-            URL url = new URL("https://opendata.paris.fr/api/records/1.0/search/?dataset=eclairage-public" + param);
+            URL url = new URL("https://opendata.paris.fr/api/records/1.0/search/?dataset=chantiers-perturbants" + param);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
@@ -67,16 +69,15 @@ public class StreetLightController {
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     (conn.getInputStream())));
 
-            // output = br.readLine() != null ? StreetLightController.jsonToObject(br.readLine()) : new ArrayList<JSONObject>();
             String line;
 
             if(recordid == ""){
                 while ((line = br.readLine()) != null) {
-                    output = StreetLightController.jsonToObject(line);
+                    output = WorkCampController.jsonToObject(line);
                 }
             }else{
                 while ((line = br.readLine()) != null) {
-                    output = StreetLightController.jsonToObjectGetSingle(line, recordid);
+                    output = WorkCampController.jsonToObjectGetSingle(line, recordid);
                 }
             }
 
@@ -92,7 +93,7 @@ public class StreetLightController {
     }
 
     /*
-    List all StreetLights
+    List all WorkCamps
      */
     public static JSONArray jsonToObject(String jsonString) throws JSONException {
         JSONObject jsonDecode = new JSONObject(jsonString);
@@ -100,17 +101,17 @@ public class StreetLightController {
 
         int length = jsonDecodeRecords.length();
 
-        JSONArray listStreetLight = new JSONArray();
+        JSONArray listWorkCamp = new JSONArray();
         for (int i=0;i<length;i++){
             JSONObject element = jsonDecodeRecords.getJSONObject(i);
-            listStreetLight.put(StreetLightController.getJsonContentApi(element, i));
+            listWorkCamp.put(WorkCampController.getJsonContentApi(element, i));
         }
 
-        return listStreetLight;
+        return listWorkCamp;
     }
 
     /*
-     List elements and get the StreetLight from recordId
+     List elements and get the WorkCamps from recordId
      */
     public static JSONArray jsonToObjectGetSingle(String jsonString, String recordId) throws JSONException {
         JSONObject jsonDecode = new JSONObject(jsonString);
@@ -118,20 +119,19 @@ public class StreetLightController {
 
         int length = jsonDecodeRecords.length();
 
-        JSONArray listStreetLight = new JSONArray();
+        JSONArray listWorkCamp = new JSONArray();
         for (int i=0;i<length;i++){
             JSONObject element = jsonDecodeRecords.getJSONObject(i);
 
-            System.out.println("-> " + element.getString("recordid"));
             if(element.getString("recordid").trim().equals(recordId)){
-                listStreetLight.put(StreetLightController.getJsonContentApi(element, i));
+                listWorkCamp.put(WorkCampController.getJsonContentApi(element, i));
                 break;
             }else{
                 continue;
             }
         }
 
-        return listStreetLight;
+        return listWorkCamp;
     }
 
     /*
@@ -150,13 +150,13 @@ public class StreetLightController {
         StreetLight streetLightElement = new StreetLight(
                 i + 1,
                 element.getString("recordid").trim(),
-                element.getString("datasetid"),
-                elementField.getString("flux_lampe"),
+                elementField.getString("objet"),
+                elementField.getString("maitre_ouvrage"),
                 elementCoordAltitude,
                 elementCoordLongitude,
-                elementField.getString("lib_region"),
-                elementField.has("numvoie_ou") ? elementField.getString("numvoie_ou") : "",
-                elementField.getString("lib_voie")
+                elementField.getString("date_creation"),
+                elementField.getString("date_fin"),
+                elementField.getString("cp_arrondissement")
         );
 
         return streetLightElement.toJSON();

@@ -10,8 +10,12 @@ public class StreetLight {
     private String _flux_lampe;
     private Double _latitude;
     private Double _longitude;
+    private String _arrondissement;
+    private String _rue;
+    private String _voie;
 
-    public StreetLight(long id, String idrecord, String content, String flux_lampe, Double latitude, Double longitude)
+    public StreetLight(long id, String idrecord, String content, String flux_lampe, Double latitude, Double longitude,
+                       String arrondissement, String rue, String voie)
     {
         this._id = id;
         this._idrecord = idrecord;
@@ -19,6 +23,9 @@ public class StreetLight {
         this._flux_lampe = flux_lampe;
         this._latitude = latitude;
         this._longitude = longitude;
+        this._arrondissement = arrondissement;
+        this._rue = rue;
+        this._voie = voie;
     }
 
     public long get_id() {
@@ -49,6 +56,18 @@ public class StreetLight {
         this._content = _content;
     }
 
+    public String get_arrondissement() { return _arrondissement; }
+
+    public void set_arrondissement(String _arrondissement) { this._arrondissement = _arrondissement; }
+
+    public String get_rue() { return _rue; }
+
+    public void set_rue(String _rue) { this._rue = _rue; }
+
+    public String get_voie() { return _voie; }
+
+    public void set_voie(String _voie) { this._voie = _voie; }
+
     public JSONObject toJSON() throws JSONException
     {
         JSONObject jo = new JSONObject();
@@ -58,6 +77,9 @@ public class StreetLight {
         jo.put("flux_lamp", _flux_lampe);
         jo.put("latitude", _latitude);
         jo.put("longitude", _longitude);
+        jo.put("arrondissement", _arrondissement);
+        jo.put("rue", _rue);
+        jo.put("voie", _voie);
 
         return jo;
     }
