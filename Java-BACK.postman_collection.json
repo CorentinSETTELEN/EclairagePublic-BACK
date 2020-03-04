@@ -30,12 +30,12 @@
 					"response": []
 				},
 				{
-					"name": "LampadaireID in BoisDeBoulogne",
+					"name": "Lampadaire par son ID",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/eclairage-public/&facet=lib_voiedo&refine.lib_voiedo=BOIS+de+BOULOGNE/21fda5d428471d4bd3928e0fa79d88f9919ea218",
+							"raw": "http://localhost:8080/eclairage-public/single/714b5a22cb245fd17aa9e70a6db0105cc732a0ba",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -43,8 +43,8 @@
 							"port": "8080",
 							"path": [
 								"eclairage-public",
-								"&facet=lib_voiedo&refine.lib_voiedo=BOIS+de+BOULOGNE",
-								"21fda5d428471d4bd3928e0fa79d88f9919ea218"
+								"single",
+								"714b5a22cb245fd17aa9e70a6db0105cc732a0ba"
 							]
 						}
 					},
@@ -76,6 +76,27 @@
 		{
 			"name": "chantiers-pertubants",
 			"item": [
+				{
+					"name": "Chantier par son ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/chantiers-perturbants/single/f2e9f0bef4a97f8bae5cce4685c37e7f6fed432d",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"chantiers-perturbants",
+								"single",
+								"f2e9f0bef4a97f8bae5cce4685c37e7f6fed432d"
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "Chantier pertubants",
 					"request": {

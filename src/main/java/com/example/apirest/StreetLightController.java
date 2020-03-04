@@ -29,109 +29,38 @@ public class StreetLightController {
     @GetMapping(value="/eclairage-public/{param}", produces = "application/json")
     public <GET, Path, Produces> String getEclairagePublicTown(@PathVariable String param) throws JSONException
     {
-        // return new StreetLight(counter.incrementAndGet(), "", String.format(template, name));
-        return StreetLightController.callOpenDataParisApi(param, "").toString();
+        String url_string = "https://opendata.paris.fr/api/records/1.0/search/?dataset=eclairage-public" + param;
+        return StreetLightController.callOpenDataController(url_string);
     }
 
     @GetMapping("/eclairage-public")
-    public String getEclairagePublic(@RequestParam(value = "district", defaultValue = "") String param) throws JSONException {
-        return StreetLightController.callOpenDataParisApi(param, "").toString();
-    }
-
-    @GetMapping("/eclairage-public/{param}/{recordid}")
-    public String getEclairagePublicSingle(@PathVariable String param, @PathVariable String recordid) throws JSONException {
-        return StreetLightController.callOpenDataParisApi(param, recordid).toString();
-    }
-
-    /*
-    Call opendata.paris API with param
-     */
-    static JSONArray callOpenDataParisApi(String param, String recordid)
+    public String getEclairagePublic(@RequestParam(value = "district", defaultValue = "") String param) throws JSONException
     {
-        System.out.println(param);
-
-        JSONArray output = new JSONArray();
-
-        try {
-            // URL url = new URL("https://opendata.paris.fr/api/records/1.0/search/?dataset=eclairage-public&facet=ville&refine.ville=" + dataset);
-            URL url = new URL("https://opendata.paris.fr/api/records/1.0/search/?dataset=eclairage-public" + param);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Accept", "application/json");
-
-            if (conn.getResponseCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : "
-                        + conn.getResponseCode());
-            }
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(
-                    (conn.getInputStream())));
-
-            // output = br.readLine() != null ? StreetLightController.jsonToObject(br.readLine()) : new ArrayList<JSONObject>();
-            String line;
-
-            if(recordid == ""){
-                while ((line = br.readLine()) != null) {
-                    output = StreetLightController.jsonToObject(line);
-                }
-            }else{
-                while ((line = br.readLine()) != null) {
-                    output = StreetLightController.jsonToObjectGetSingle(line, recordid);
-                }
-            }
-
-            conn.disconnect();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return output;
+        String url_string = "https://opendata.paris.fr/api/records/1.0/search/?dataset=eclairage-public" + param;
+        return StreetLightController.callOpenDataController(url_string);
     }
 
-    /*
-    List all StreetLights
-     */
-    public static JSONArray jsonToObject(String jsonString) throws JSONException {
-        JSONObject jsonDecode = new JSONObject(jsonString);
-        JSONArray jsonDecodeRecords = jsonDecode.getJSONArray("records");
+    // @GetMapping("/eclairage-public/single/{recordid}"
+    @GetMapping(value="/eclairage-public/single/{recordid}", produces = "application/json")
+    public String getEclairagePublicSingle(@PathVariable String recordid) throws JSONException
+    {
+        String url_string = "https://opendata.paris.fr/api/records/1.0/search/?dataset=eclairage-public&facet=recordid&refine.recordid=" + recordid;
+        return StreetLightController.callOpenDataController(url_string);
+    }
 
-        int length = jsonDecodeRecords.length();
+    public static String callOpenDataController(String url_string) throws JSONException
+    {
+        JSONArray outputs = OpenDataApi.callApi(url_string);
+        int length = outputs.length();
 
         JSONArray listStreetLight = new JSONArray();
         for (int i=0;i<length;i++){
-            JSONObject element = jsonDecodeRecords.getJSONObject(i);
+            JSONObject element = outputs.getJSONObject(i);
+
             listStreetLight.put(StreetLightController.getJsonContentApi(element, i));
         }
 
-        return listStreetLight;
-    }
-
-    /*
-     List elements and get the StreetLight from recordId
-     */
-    public static JSONArray jsonToObjectGetSingle(String jsonString, String recordId) throws JSONException {
-        JSONObject jsonDecode = new JSONObject(jsonString);
-        JSONArray jsonDecodeRecords = jsonDecode.getJSONArray("records");
-
-        int length = jsonDecodeRecords.length();
-
-        JSONArray listStreetLight = new JSONArray();
-        for (int i=0;i<length;i++){
-            JSONObject element = jsonDecodeRecords.getJSONObject(i);
-
-            System.out.println("-> " + element.getString("recordid"));
-            if(element.getString("recordid").trim().equals(recordId)){
-                listStreetLight.put(StreetLightController.getJsonContentApi(element, i));
-                break;
-            }else{
-                continue;
-            }
-        }
-
-        return listStreetLight;
+        return listStreetLight.toString();
     }
 
     /*
