@@ -40,8 +40,7 @@ public class StreetLightController {
         return StreetLightController.callOpenDataController(url_string);
     }
 
-    // @GetMapping("/eclairage-public/single/{recordid}"
-    @GetMapping(value="/eclairage-public/single/{recordid}", produces = "application/json")
+    @GetMapping(value="/eclairage-public/id/{recordid}", produces = "application/json")
     public String getEclairagePublicSingle(@PathVariable String recordid) throws JSONException
     {
         String url_string = "https://opendata.paris.fr/api/records/1.0/search/?dataset=eclairage-public&facet=recordid&refine.recordid=" + recordid;

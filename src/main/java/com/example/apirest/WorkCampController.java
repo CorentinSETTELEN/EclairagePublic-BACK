@@ -41,8 +41,8 @@ public class WorkCampController {
         return WorkCampController.callOpenDataController(url_string);
     }
 
-    @GetMapping("/chantiers-perturbants/{param}/{recordid}")
-    public String getChantiersPertubantsSingle(@PathVariable String param, @PathVariable String recordid) throws JSONException {
+    @GetMapping("/chantiers-perturbants/id/{recordid}")
+    public String getChantiersPertubantsSingle(@PathVariable String recordid) throws JSONException {
         String url_string = "https://opendata.paris.fr/api/records/1.0/search/?dataset=chantiers-perturbants&facet=recordid&refine.recordid=" + recordid;
         return WorkCampController.callOpenDataController(url_string);
     }
