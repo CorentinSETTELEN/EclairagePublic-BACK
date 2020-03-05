@@ -30,27 +30,6 @@
 					"response": []
 				},
 				{
-					"name": "Lampadaire par son ID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/eclairage-public/single/714b5a22cb245fd17aa9e70a6db0105cc732a0ba",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"eclairage-public",
-								"single",
-								"714b5a22cb245fd17aa9e70a6db0105cc732a0ba"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Bois de Boulogne",
 					"request": {
 						"method": "GET",
@@ -69,6 +48,27 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Lampadaire par son ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/eclairage-public/id/714b5a22cb245fd17aa9e70a6db0105cc732a0ba",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"eclairage-public",
+								"id",
+								"714b5a22cb245fd17aa9e70a6db0105cc732a0ba"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -76,27 +76,6 @@
 		{
 			"name": "chantiers-pertubants",
 			"item": [
-				{
-					"name": "Chantier par son ID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/chantiers-perturbants/single/f2e9f0bef4a97f8bae5cce4685c37e7f6fed432d",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"chantiers-perturbants",
-								"single",
-								"f2e9f0bef4a97f8bae5cce4685c37e7f6fed432d"
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "Chantier pertubants",
 					"request": {
@@ -111,6 +90,73 @@
 							"port": "8080",
 							"path": [
 								"chantiers-perturbants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Chantier par son ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/chantiers-perturbants/id/f2e9f0bef4a97f8bae5cce4685c37e7f6fed432d",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"chantiers-perturbants",
+								"id",
+								"f2e9f0bef4a97f8bae5cce4685c37e7f6fed432d"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "centre-sante",
+			"item": [
+				{
+					"name": "Centre sante",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/centre-sante",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"centre-sante"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Centre de santé par son ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/centre-sante/id/c381a5cc8fd787ec03381baf2ef7a199bc0fdcc2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"centre-sante",
+								"id",
+								"c381a5cc8fd787ec03381baf2ef7a199bc0fdcc2"
 							]
 						}
 					},
