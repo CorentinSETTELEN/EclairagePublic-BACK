@@ -75,7 +75,7 @@ public class WorkCampController {
 
         JSONObject elementField = element.getJSONObject("fields");
         System.out.println(elementField);
-        StreetLight streetLightElement = new StreetLight(
+        WorkCamp WorkCampElement = new WorkCamp(
                 i + 1,
                 element.getString("recordid").trim(),
                 elementField.has("objet") ? elementField.getString("objet") : "",
@@ -87,6 +87,6 @@ public class WorkCampController {
                 elementField.getString("cp_arrondissement")
         );
 
-        return streetLightElement.toJSON();
+        return WorkCampElement.toJSON();
     }
 }
