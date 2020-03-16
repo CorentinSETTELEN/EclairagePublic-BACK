@@ -1,0 +1,363 @@
+swagger: "2.0"
+info:
+  description: "Liste des routes : https://github.com/CorentinSETTELEN/EclairagePublic-BACK"
+  version: "1.0.0"
+  title: "API OpenData Paris MSPR"
+  contact:
+    email: "nicolas.domenech34@laposte.net"
+host: "dnt4espiback.herokuapp.com"
+tags:
+- name: "eclairage-public"
+  description: "eclairage-public description"
+- name: "chantiers-perturbants"
+  description: "chantiers-perturbants description"
+- name: "centre-sante"
+  description: "centre-sante description"
+schemes:
+- "https"
+- "http"
+paths:
+  /eclairage-public:
+    get:
+      tags:
+      - "eclairage-public"
+      summary: "Récupére les éclaires publics"
+      description: "Récupére les éclairages publics (sans paramètres)"
+      operationId: "eclairage-public"
+      produces:
+      - "application/xml"
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/eclairage-public"
+        400:
+          description: "Invalid status value"
+  /eclairage-public/{facet}:
+    get:
+      tags:
+      - "eclairage-public"
+      summary: "Récupére les éclaires publics Facet"
+      description: "Récupére les éclairages publics à partir d'un facet. Le facet permet de définir l'endroit, le nombre ..."
+      operationId: "eclairage-publicFacet"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "facet"
+        in: "path"
+        description: "ID of pet to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/eclairage-public"
+        400:
+          description: "Invalid status value"
+  /eclairage-public/id/{recordId}:
+    get:
+      tags:
+      - "eclairage-public"
+      summary: "Récupére les éclaires publics recordID"
+      description: "Récupére les éclairages publics à partir d'un recordId d'un lampadaire"
+      operationId: "eclairage-publicRecordId"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "recordId"
+        in: "path"
+        description: "ID of pet to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/eclairage-public"
+        400:
+          description: "Invalid status value"
+  /chantiers-perturbants:
+    get:
+      tags:
+      - "chantiers-perturbants"
+      summary: "Récupére les chantiers pertubants"
+      description: "Récupére les chantiers pertubants"
+      operationId: "chantiers-perturbants"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "status"
+        in: "query"
+        description: "Status values that need to be considered for filter"
+        required: true
+        type: "array"
+        items:
+          type: "string"
+          enum:
+          - "available"
+          - "pending"
+          - "sold"
+          default: "available"
+        collectionFormat: "multi"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/chantiers-perturbants"
+        400:
+          description: "Invalid status value"
+  /chantiers-perturbants/{facet}:
+    get:
+      tags:
+      - "chantiers-perturbants"
+      summary: "Récupére les chantiers pertubants Facet"
+      description: "Récupére les chantiers pertubants à partir d'un facet"
+      operationId: "chantiers-perturbantsFacet"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "facet"
+        in: "path"
+        description: "ID of pet to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/chantiers-perturbants"
+        400:
+          description: "Invalid status value"
+  /chantiers-perturbants/id/{recordId}:
+    get:
+      tags:
+      - "chantiers-perturbants"
+      summary: "Récupére les chantiers pertubants recordID"
+      description: "Récupére les chantiers pertubants à partir d'un recordID"
+      operationId: "chantiers-perturbantsRecordId"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "recordId"
+        in: "path"
+        description: "ID of pet to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/chantiers-perturbants"
+        400:
+          description: "Invalid status value"
+  /centre-sante:
+    get:
+      tags:
+      - "centre-sante"
+      summary: "Récupére les centres de santé"
+      description: "Récupére les centres de santé"
+      operationId: "centre-sante"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "status"
+        in: "query"
+        description: "Status values that need to be considered for filter"
+        required: true
+        type: "array"
+        items:
+          type: "string"
+          enum:
+          - "available"
+          - "pending"
+          - "sold"
+          default: "available"
+        collectionFormat: "multi"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/centre-sante"
+        400:
+          description: "Invalid status value"
+  /centre-sante/{facet}:
+    get:
+      tags:
+      - "centre-sante"
+      summary: "Récupére les centres de santé facet"
+      description: "Récupére les centres de santé à partir d'un facet"
+      operationId: "centre-santeFacet"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "facet"
+        in: "path"
+        description: "ID of pet to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/centre-sante"
+        400:
+          description: "Invalid status value"
+  /centre-sante/id/{recordId}:
+    get:
+      tags:
+      - "centre-sante"
+      summary: "Récupére les centres de santé recordID"
+      description: "Récupére les centres de santé à partir d'un facet"
+      operationId: "centre-santeRecordId"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "recordId"
+        in: "path"
+        description: "ID of pet to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/centre-sante"
+        400:
+          description: "Invalid status value"
+securityDefinitions:
+  petstore_auth:
+    type: "oauth2"
+    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
+    flow: "implicit"
+    scopes:
+      write:pets: "modify pets in your account"
+      read:pets: "read your pets"
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+definitions:
+  eclairage-public:
+    type: "object"
+    required:
+    - "name"
+    - "photoUrls"
+    properties:
+      idrecord:
+        type: "string"
+        description: "Id unique"
+      content:
+        type: "string"
+        description: "Type d'élément"
+      flux_lamp:
+        type: "integer"
+        description: "Intensité de la lampe"
+      voie:
+        type: "string"
+        description: "Nom de la rue"
+      rue:
+        type: "string"
+        description: "Adresse précise"
+      id:
+        type: "integer"
+        description: "id"
+      latitude:
+        type: "integer"
+        description: "Latitude"
+      longitude:
+        type: "integer"
+        description: "Longitude"
+  chantiers-perturbants:
+    type: "object"
+    required:
+    - "name"
+    - "photoUrls"
+    properties:
+      idrecord:
+        type: "string"
+        description: "Id unique"
+      content:
+        type: "string"
+        description: "Type d'élément"
+      flux_lamp:
+        type: "integer"
+        description: "Intensité de la lampe"
+      voie:
+        type: "string"
+        description: "Nom de la rue"
+      rue:
+        type: "string"
+        description: "Adresse précise"
+      id:
+        type: "integer"
+        description: "id"
+      latitude:
+        type: "integer"
+        description: "Latitude"
+      longitude:
+        type: "integer"
+        description: "Longitude"
+  centre-sante:
+    type: "object"
+    required:
+    - "name"
+    - "photoUrls"
+    properties:
+      idrecord:
+        type: "string"
+        description: "Id unique"
+      content:
+        type: "string"
+        description: "Type d'élément"
+      flux_lamp:
+        type: "integer"
+        description: "Intensité de la lampe"
+      voie:
+        type: "string"
+        description: "Nom de la rue"
+      rue:
+        type: "string"
+        description: "Adresse précise"
+      id:
+        type: "integer"
+        description: "id"
+      latitude:
+        type: "integer"
+        description: "Latitude"
+      longitude:
+        type: "integer"
+        description: "Longitude"      
